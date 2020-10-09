@@ -14,13 +14,6 @@ table = PrettyTable(["Bases", "Operador 1", "op",
                      "Operador 2", "=", "Resultado"])
 
 
-# Alinha as colunas
-""" table.align["Hexadecimal"] = "l"
-table.align["UF"] = "l"
-table.align["População"] = "r"
-table.align["IDH-M"] = "r"
-table.align["Renda per Capita"] = "r" """
-
 caracteres = ["+", "-", "*", "/", "|", "&"]
 
 
@@ -69,7 +62,11 @@ def formataBases(decimal):
     list_bases.append("{:01x}".format(decimal))
     list_bases.append("{:01d}".format(decimal))
     list_bases.append("{:01o}".format(decimal))
-    list_bases.append("{:01b}".format(decimal))
+    list_bases.append("{:08b}".format(decimal))
+    if decimal > 32 and decimal < 126: #imprimivel
+        list_bases.append("{:01c}".format(decimal))
+    else:
+        list_bases.append("-")
 
     return list_bases
 
@@ -79,11 +76,12 @@ while True:
     operation = findOperation(expression)
 
     if operation != False:
-        hexadecimal = ['Hexadecimal']
-        decimal = ['Decimal']
-        octal = ['Octal']
-        binary = ['Binário']
-        list_rows = [hexadecimal, decimal, octal, binary]
+        hexadecimal = ['Hex']
+        decimal = ['Dec']
+        octal = ['Oct']
+        binary = ['Bin']
+        asc = ['Asc']
+        list_rows = [hexadecimal, decimal, octal, binary, asc]
 
         operators = expression.split(operation)
 
