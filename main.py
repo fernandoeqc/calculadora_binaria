@@ -10,112 +10,97 @@ SAÍDA PARA CALCULOS SIMPLES:
     print("asc| -    + -    = -")
 """
 
-x = PrettyTable(["Bases", "Operador 1", "op","Operador 2", "=","Resultado"])
-
+table = PrettyTable(["Bases", "Operador 1", "op",
+                     "Operador 2", "=", "Resultado"])
 
 
 # Alinha as colunas
-""" x.align["Hexadecimal"] = "l"
-x.align["UF"] = "l"
-x.align["População"] = "r"
-x.align["IDH-M"] = "r"
-x.align["Renda per Capita"] = "r" """
+""" table.align["Hexadecimal"] = "l"
+table.align["UF"] = "l"
+table.align["População"] = "r"
+table.align["IDH-M"] = "r"
+table.align["Renda per Capita"] = "r" """
 
 caracteres = ["+", "-", "*", "/", "|", "&"]
 
 
-def calculo(op1,op2,operacao):
-    resultado = None
+def calculation(op1, op2, operation):
+    result = None
     op1 = int(op1)
     op2 = int(op2)
-    
 
-    if operacao == "+":
-        resultado = op1 + op2
+    if operation == "+":
+        result = op1 + op2
 
-    if operacao == "-":
-        resultado = op1 - op2
+    if operation == "-":
+        result = op1 - op2
 
-    if operacao == "*":
-        resultado = op1 * op2
+    if operation == "*":
+        result = op1 * op2
 
-    if operacao == "/":
-        resultado = op1 / op2
+    if operation == "/":
+        result = op1 / op2
 
-    if operacao == "|":
-        resultado = op1 | op2
+    if operation == "|":
+        result = op1 | op2
 
-    if operacao == "&":
-        resultado = op1 & op2
-  
-    return resultado
+    if operation == "&":
+        result = op1 & op2
 
-def buscaOperacao(expressao):
+    return result
+
+
+def findOperation(expression):
     global caracteres
     for caractere in caracteres:
-        if caractere in entrada:
+        if caractere in expression:
             return caractere
     return False
 
-def formataBases(decimal):
-    lista_bases = []
-    lista_bases.append("{:02x}".format(decimal))
-    lista_bases.append("{:02d}".format(decimal))
-    lista_bases.append("{:02o}".format(decimal))
-    lista_bases.append("{:02b}".format(decimal))
 
-    return lista_bases
+def formataBases(decimal):
+    list_bases = []
+    list_bases.append("{:01x}".format(decimal))
+    list_bases.append("{:01d}".format(decimal))
+    list_bases.append("{:01o}".format(decimal))
+    list_bases.append("{:01b}".format(decimal))
+
+    return list_bases
+
 
 while True:
-    entrada = input("Digite a expressão: \n")
-    operacao = buscaOperacao(entrada)
+    expression = input("Digite a expressão: \n")
+    operation = findOperation(expression)
 
-
-    if operacao != False:
+    if operation != False:
         hexadecimal = ['Hexadecimal']
         decimal = ['Decimal']
         octal = ['Octal']
-        binario = ['Binário']
+        binary = ['Binário']
+        list_rows = [hexadecimal, decimal, octal, binary]
 
-        operadores = entrada.split(operacao)
-        resultado = calculo(operadores[0],operadores[1],operacao)
-        
-        bases_op0 = formataBases(int(operadores[0]))
-        bases_op1 = formataBases(int(operadores[1]))
-        bases_res = formataBases(resultado)
+        operators = expression.split(operation)
+        result = calculation(operators[0], operators[1], operation)
 
-        hexadecimal.append(bases_op0[0])
-        hexadecimal.append(operacao)
-        hexadecimal.append(bases_op1[0])
-        hexadecimal.append('=')
-        hexadecimal.append(bases_res[0])
-        
-        decimal.append(bases_op0[1])
-        decimal.append(operacao)
-        decimal.append(bases_op1[1])
-        decimal.append('=')
-        decimal.append(bases_res[1])
-        
-        octal.append(bases_op0[2])
-        octal.append(operacao)
-        octal.append(bases_op1[2])
-        octal.append('=')
-        octal.append(bases_res[2])
+        bases_op0 = formataBases(int(operators[0]))
+        bases_op1 = formataBases(int(operators[1]))
+        bases_res = formataBases(int(result))
 
-        binario.append(bases_op0[3])
-        binario.append(operacao)
-        binario.append(bases_op1[3])
-        binario.append('=')
-        binario.append(bases_res[3])
-        
-        x.add_row(hexadecimal)
-        x.add_row(decimal)
-        x.add_row(octal)
-        x.add_row(binario)
+        for row in range(len(list_rows)):
+            list_rows[row].append(bases_op0[row])
+            list_rows[row].append(operation)
+            list_rows[row].append(bases_op1[row])
+            list_rows[row].append('=')
+            list_rows[row].append(bases_res[row])
 
-        print(x)
+        table.add_row(hexadecimal)
+        table.add_row(decimal)
+        table.add_row(octal)
+        table.add_row(binary)
 
-        x.clear_rows()
-     
+        print(table)
+
+        table.clear_rows()
+
     else:
         print("Não há nada a se fazer")
