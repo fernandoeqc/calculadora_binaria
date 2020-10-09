@@ -26,8 +26,11 @@ caracteres = ["+", "-", "*", "/", "|", "&"]
 
 def calculation(op1, op2, operation):
     result = None
-    op1 = int(op1)
-    op2 = int(op2)
+    try:
+        op1 = int(op1)
+        op2 = int(op2)
+    except ValueError:
+        return f"Apenas operacoes com dois numeros inteiros positivos decimais"
 
     if operation == "+":
         result = op1 + op2
@@ -39,7 +42,10 @@ def calculation(op1, op2, operation):
         result = op1 * op2
 
     if operation == "/":
-        result = op1 / op2
+        if op2 == 0:
+            return "Não é possível dividir por zero"
+        else:    
+            result = op1 / op2
 
     if operation == "|":
         result = op1 | op2
@@ -80,7 +86,11 @@ while True:
         list_rows = [hexadecimal, decimal, octal, binary]
 
         operators = expression.split(operation)
+
         result = calculation(operators[0], operators[1], operation)
+        if type(result) == str:
+            print(result)
+            continue
 
         bases_op0 = formataBases(int(operators[0]))
         bases_op1 = formataBases(int(operators[1]))
@@ -93,14 +103,11 @@ while True:
             list_rows[row].append('=')
             list_rows[row].append(bases_res[row])
 
-        table.add_row(hexadecimal)
-        table.add_row(decimal)
-        table.add_row(octal)
-        table.add_row(binary)
+            table.add_row(list_rows[row])
 
         print(table)
 
         table.clear_rows()
 
     else:
-        print("Não há nada a se fazer")
+        print("Não há operação a se fazer. tente uma das operações: [+ - * / | &]")
